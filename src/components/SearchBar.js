@@ -3,11 +3,21 @@ import { Text, View, StyleSheet, TextInput, } from "react-native";
 import {Entypo} from "@expo/vector-icons";
 
 
-const SearchBar = () => {
+const SearchBar = (props) => {
     return (
         <View style={styles.background}>
+            
             <Entypo name="magnifying-glass" style={styles.iconStyle}/>
-            <TextInput placeholder="Search" style={styles.inputStyle}/>
+            
+            <TextInput 
+            placeholder="Search" 
+            style={styles.inputStyle}
+            value={props.searchTerm}
+            autoCapitalize="none"
+            onChangeText={(newTerm) => props.onTermChange(newTerm)}
+            onEndEditing={() => {props.onSearchTermSubmit()}}
+            />
+
         </View>
     )
 
