@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from "react";
-import { Text, View, StyleSheet, } from "react-native";
+import { Text, View, StyleSheet, ScrollView } from "react-native";
 import SearchBar from "../components/SearchBar";
 import ResultsList from "../components/ResultsList";
-import Yelp from "../api/Yelp";
 import useResults from "../hooks/useResults";
 
 
-const SearchScreen = () => {
+const SearchScreen = (props) => {
 
     const [searchTerm, setSearchTerm] = useState(" ");
     const [searchApi, results, errorMessage] = useResults();
@@ -20,26 +19,30 @@ const SearchScreen = () => {
     };
 
     return (
-        <View>
+        <View style= {styles.container}>
             <SearchBar 
             searchTerm={searchTerm} 
             onTermChange={(newTerm) => setSearchTerm(newTerm)}
-            onSearchTermSubmit={() => {searchApi()}}
-            />
-
-            <Text>Hello Search Screen</Text>
-            <Text>We have found {results.length}</Text>
+            onSearchTermSubmit={() => {searchApi(searchTerm)}}
+            />           
+            
             {errorMessage ? <Text>{errorMessage}</Text> : null}
-
-            <ResultsList results={filterResultsByPrice("$")} headerText="Budget Options"/>
-            <ResultsList results={filterResultsByPrice("$$")} headerText="Kinda Pricey"/>    
-            <ResultsList results={filterResultsByPrice("$$$")} headerText="A Whole Lotta Dollas"/>
+            
+            <ScrollView>
+                <ResultsList results={filterResultsByPrice("$")} headerText="Budget Options"/>
+                <ResultsList results={filterResultsByPrice("$$")} headerText="Kinda Pricey"/>    
+                <ResultsList results={filterResultsByPrice("$$$")} headerText="A Whole Lotta Dollas"/>
+            </ScrollView>
         </View>
     )
 
 }
 
-const styles = StyleSheet.create({   
+const styles = StyleSheet.create({ 
+    container:{
+        marginLeft: 10,
+        flex: 1,
+    },  
 
 });
 
